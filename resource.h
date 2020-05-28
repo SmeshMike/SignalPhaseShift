@@ -24,6 +24,8 @@
 #define IDC_WIDTH5                      1014
 #define IDC_LENGTH7                     1016
 #define IDC_RUN                         1017
+#define IDC_RUN2                        1018
+#define IDC_RUN3                        1019
 #define IDC_EPSILON8                    1020
 #define IDC_STATIC1                     1021
 #define IDC_SHIFT                       1022

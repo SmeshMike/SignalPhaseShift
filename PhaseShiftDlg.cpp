@@ -62,11 +62,11 @@ CPhaseShiftDlg::CPhaseShiftDlg(CWnd* pParent /*=nullptr*/)
 	, center3(500)
 	, center4(700)
 	, center5(900)
-	, width1(19)
-	, width2(22)
-	, width3(19)
-	, width4(21)
-	, width5(20)
+	, width1(7)
+	, width2(8)
+	, width3(7)
+	, width4(5)
+	, width5(7)
 	, length(1024)
 	, epsilon(1.e-3)
 {
@@ -102,6 +102,8 @@ BEGIN_MESSAGE_MAP(CPhaseShiftDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SHIFT, &CPhaseShiftDlg::OnBnClickedShift)
 	ON_BN_CLICKED(IDC_RUN, &CPhaseShiftDlg::OnBnClickedRun)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_RUN2, &CPhaseShiftDlg::OnBnClickedRun2)
+	ON_BN_CLICKED(IDC_RUN3, &CPhaseShiftDlg::OnBnClickedRun3)
 END_MESSAGE_MAP()
 
 
@@ -215,6 +217,11 @@ void CPhaseShiftDlg::OnPaint()
 		{
 			picture(MDc1, rect1, signal, 0, length);
 			Draw(MDc1, rect1, signal, 255, 0, 0);
+			
+		}
+
+		if (isSpectrReady == true)//Отрисовывает 
+		{
 			picture(MDc2, rect2, spectr, 0, 1);
 			Draw(MDc2, rect2, spectr, 255, 0, 0);
 		}
@@ -321,6 +328,19 @@ void CPhaseShiftDlg::OnBnClickedRun()
 	}
 
 
+
+
+	Invalidate(0);
+	isSignReady = true;
+	UpdateData(false);
+}
+
+void CPhaseShiftDlg::OnBnClickedRun2()
+{
+	// TODO: Add your control notification handler code here
+
+	UpdateData(true);
+
 	//===========ПОСТРОЕНИЕ СПЕКТРА======================
 
 	spectr.clear(); spectr.resize(length);
@@ -339,8 +359,19 @@ void CPhaseShiftDlg::OnBnClickedRun()
 	{
 		spectr[i] = four[i].re * four[i].re + four[i].im * four[i].im;
 	}
+	Invalidate(0);
+	isSpectrReady = true;
+	UpdateData(false);
+}
 
-	//===========ВОССТАНОВЛЕНИЕ======================
+
+void CPhaseShiftDlg::OnBnClickedRun3()
+{
+	// TODO: Add your control notification handler code here
+
+	UpdateData(true);
+
+		//===========ВОССТАНОВЛЕНИЕ======================
 	recovered.clear(); recovered.resize(length);
 	recoveredTemp.clear(); recoveredTemp.resize(length);
 	signalRecovered.clear(); signalRecovered.resize(2 * length);
@@ -369,10 +400,11 @@ void CPhaseShiftDlg::OnBnClickedRun()
 	timer = SetTimer(1, 1, NULL);
 
 	Invalidate(0);
-
-	isSignReady = true;
+	isRecoverReady= true;
 	UpdateData(false);
 }
+
+
 
 // комплексное сопряжение
 cmplx conjg(cmplx c) { return cmplx(c.re, -c.im); }
@@ -524,6 +556,8 @@ void CPhaseShiftDlg::OnTimer(UINT_PTR nIDEvent)
 
 	CDialogEx::OnTimer(nIDEvent);
 }
+
+
 
 
 

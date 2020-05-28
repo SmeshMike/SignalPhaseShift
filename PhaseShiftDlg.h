@@ -82,6 +82,8 @@ public:
 	double epsilon;
 
 	bool isSignReady;
+	bool isSpectrReady;
+	bool isRecoverReady;
 	bool isShiftReady;
 	int timer;
 	int minIndex;
@@ -177,4 +179,6 @@ public:
 
 
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedRun2();
+	afx_msg void OnBnClickedRun3();
 };
