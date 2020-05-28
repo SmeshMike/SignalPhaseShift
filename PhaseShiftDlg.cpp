@@ -69,6 +69,7 @@ CPhaseShiftDlg::CPhaseShiftDlg(CWnd* pParent /*=nullptr*/)
 	, width5(7)
 	, length(1024)
 	, epsilon(1.e-3)
+	, invert(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -104,6 +105,7 @@ BEGIN_MESSAGE_MAP(CPhaseShiftDlg, CDialogEx)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_RUN2, &CPhaseShiftDlg::OnBnClickedRun2)
 	ON_BN_CLICKED(IDC_RUN3, &CPhaseShiftDlg::OnBnClickedRun3)
+	ON_BN_CLICKED(IDC_INVERT, &CPhaseShiftDlg::OnBnClickedInvert)
 END_MESSAGE_MAP()
 
 
@@ -263,12 +265,16 @@ void CPhaseShiftDlg::OnBnClickedShift()
 	signalRecovered.clear(); signalRecovered.resize(2 * length);
 
 
-	for (int i = 0; i < length; i++)
-	{
-		//recoveredTemp[i] = recovered[length - i];
-		recoveredTemp[i] = recovered[i];
-	}
-
+	if (invert == 1)
+		for (int i = 0; i < length; i++)
+		{
+			recoveredTemp[i] = recovered[length - i - 1];
+		}
+	if (invert == 0)
+		for (int i = 0; i < length; i++)
+		{
+			recoveredTemp[i] = recovered[i];
+		}
 	for (int i = 0; i < length; i++)
 	{
 		sqrto[i] = 0;
@@ -516,8 +522,8 @@ void CPhaseShiftDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 
 		picture(MDc3, rect3, signalRecovered, 0, length);
-		Draw(MDc3, rect3, signal, 0, 0, 255);
-		Draw(MDc3, rect3, shift, 255, 0, 0);
+		Draw(MDc3, rect3, signal, 255, 0, 0);
+		Draw(MDc3, rect3, shift, 0, 0, 255);
 	}
 
 	if (nIDEvent == 3)
@@ -542,7 +548,7 @@ void CPhaseShiftDlg::OnTimer(UINT_PTR nIDEvent)
 
 
 		picture(MDc3, rect3, signalRecovered, 0, length);
-		Draw(MDc3, rect3, signal, 0, 0, 0);
+		Draw(MDc3, rect3, signal, 255, 0, 0);
 		Draw(MDc3, rect3, shift, 0, 0, 255);
 	}
 
@@ -561,3 +567,13 @@ void CPhaseShiftDlg::OnTimer(UINT_PTR nIDEvent)
 
 
 
+
+
+void CPhaseShiftDlg::OnBnClickedInvert()
+{
+	// TODO: Add your control notification handler code here
+	if (invert == 0)
+		invert = 1;
+	else
+		invert = 0;
+}

@@ -116,7 +116,7 @@ public:
 	double y_min1, y_max1;// Для отыскания наименьшего и наибольшего элементов по амплитуде
 
 	double precision;
-
+	int invert;
 
 	void fourea(int n, cmplx* sig, int s)// функция для Фурье- преобразований, s=1 - обратное, s=-1 -прямое
 	{
@@ -181,4 +181,5 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedRun2();
 	afx_msg void OnBnClickedRun3();
+	afx_msg void OnBnClickedInvert();
 };
